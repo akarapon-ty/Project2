@@ -24,6 +24,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.location.Location;
 import android.location.LocationManager;
+import android.widget.TextView;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.app.Activity;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,15 +42,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    TextView txtLocation;
     private GoogleMap mMap;
 
-
+GPSTracker gps;
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        gps = new GPSTracker(MapsActivity.this);
 
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +79,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
-                startActivity(intent);
+                gps = new GPSTracker(MapsActivity.this);
+
+                if(gps.canGetLocation()){
+
+                    double latitude = .getLatitude();
+                    double longitude = gps.getLongitude();
+                    LatLng latLng = new LatLng(latitude,longitude);
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
+                }else{
+
+                }
 
 
             }
