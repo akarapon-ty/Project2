@@ -182,7 +182,7 @@ public class GPSTracker  extends Service implements LocationListener {
                         {
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             updateGPSCoordinates();
->>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
+
                         }
 
                     }
