@@ -26,7 +26,6 @@ import android.provider.Settings;
  * Created by Apostolis on 10/27/2016.
  */
 
-=======
 import android.util.Log;
 
 /**
