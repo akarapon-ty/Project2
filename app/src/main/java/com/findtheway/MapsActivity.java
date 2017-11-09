@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView;
@@ -29,6 +30,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     GPSTracker gps;
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         gps = new GPSTracker(MapsActivity.this);
@@ -61,42 +71,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onClick(View view) {
-
-
                 gps = new GPSTracker(MapsActivity.this);
-
-               if(gps.canGetLocation()){
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-                   double latitude = gps.getLatitude();
-=======
+                if (gps.canGetLocation()) {
                     double latitude = gps.getLatitude();
->>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
-=======
-                    double latitude = .getLatitude();
->>>>>>> parent of 86532df... Gpsver2
                     double longitude = gps.getLongitude();
-                    LatLng latLng = new LatLng(latitude,longitude);
-                   mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-
-<<<<<<< HEAD
-            }else{
-
-=======
-                }else{
-<<<<<<< HEAD
+                } else {
                     gps.showSettingsAlert();
->>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
                 }
-=======
->>>>>>> parent of 86532df... Gpsver2
-
-                }
-
-
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,19 +96,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 }
-
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
-
-
-
