@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_place_black_24dp"
             android:title="นำทางโดยรถโดยสาร" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+
             android:title="เส้นทางรถเมล์" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="เส้นทางรถกระป๋อง" />
+
     </group>
 
     <item android:title="About">
@@ -26,5 +28,6 @@
                 android:title="เกี่ยวกับ" />
         </menu>
     </item>
+
 
 </menu>
