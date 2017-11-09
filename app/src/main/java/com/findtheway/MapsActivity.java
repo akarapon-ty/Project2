@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.view.View;
@@ -83,7 +84,7 @@ GPSTracker gps;
 
                 if(gps.canGetLocation()){
 
-                    double latitude = .getLatitude();
+                    double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
                     LatLng latLng = new LatLng(latitude,longitude);
                     mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
@@ -91,8 +92,9 @@ GPSTracker gps;
 
 
                 }else{
-
+                    gps.showSettingsAlert();
                 }
+
 
 
             }
