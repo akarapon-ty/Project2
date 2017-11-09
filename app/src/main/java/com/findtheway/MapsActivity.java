@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView;
@@ -69,10 +68,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                if(gps.canGetLocation()){
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                    double latitude = gps.getLatitude();
 =======
                     double latitude = gps.getLatitude();
 >>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
+=======
+                    double latitude = .getLatitude();
+>>>>>>> parent of 86532df... Gpsver2
                     double longitude = gps.getLongitude();
                     LatLng latLng = new LatLng(latitude,longitude);
                    mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
@@ -84,10 +87,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 =======
                 }else{
+<<<<<<< HEAD
                     gps.showSettingsAlert();
 >>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
                 }
+=======
+>>>>>>> parent of 86532df... Gpsver2
 
+                }
 
 
             }
