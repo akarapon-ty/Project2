@@ -1,7 +1,6 @@
 package com.findtheway;
 
-<<<<<<< HEAD
-=======
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -12,7 +11,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
+
 =======
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,7 +22,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-<<<<<<< HEAD
+
 
 
 /**
@@ -50,7 +49,7 @@ public class GPSTracker extends Service implements LocationListener
 
     //flag for network status
     boolean isNetworkEnabled = false;
->>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
+
 
 public class GPSTracker  extends Service implements LocationListener {
 
@@ -65,21 +64,20 @@ public class GPSTracker  extends Service implements LocationListener {
     double latitude;
     double longitude;
 
-<<<<<<< HEAD
+
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 100;
-=======
+
     //The minimum distance to change updates in metters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; //10 metters
 
     //The minimum time beetwen updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
->>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
+
 
     //Declaring a Location Manager
     protected LocationManager locationManager;
 
-<<<<<<< HEAD
     public GPSTracker(Context context){
         this.context = context;
         getLocation();
@@ -124,7 +122,7 @@ public class GPSTracker  extends Service implements LocationListener {
                                 longitude = location.getLongitude();
 
                             }
-=======
+
     public GPSTracker(Context context)
     {
         this.mContext = context;
