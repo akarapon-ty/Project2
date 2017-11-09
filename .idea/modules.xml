@@ -4,9 +4,14 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CPE121.iml" filepath="$PROJECT_DIR$/CPE121.iml" />
       <module fileurl="file://E:\CPE121df\CPE121.iml" filepath="E:\CPE121df\CPE121.iml" />
+<<<<<<< HEAD
       <module fileurl="file://D:\CPE121\.idea\CPE121df.iml" filepath="D:\CPE121\.idea\CPE121df.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://E:\CPE121df\app\app.iml" filepath="E:\CPE121df\app\app.iml" />
+=======
+      <module fileurl="file://E:\CPE121\.idea\CPE121df.iml" filepath="E:\CPE121\.idea\CPE121df.iml" />
+      <module fileurl="file://E:/CPE121df/app/app.iml" filepath="E:/CPE121df/app/app.iml" />
+>>>>>>> 86532df8cd6847cbc3475ede6a019b648550db4d
     </modules>
   </component>
 </project>
