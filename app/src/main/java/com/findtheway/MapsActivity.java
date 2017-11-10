@@ -29,7 +29,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     GPSTracker gps;
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
