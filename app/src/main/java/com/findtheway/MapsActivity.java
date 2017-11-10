@@ -51,6 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
         }
+        else {
+            Log.d("location", "cannot get location");
+        }
     }
 
     @Override
@@ -77,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng latLng = new LatLng(latitude, longitude);
                     mMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
+                    Log.d("location after clicked", ""+gps.getLatitude()+","+gps.getLongitude());
                 } else {
                     gps.showSettingsAlert();
                 }
