@@ -66,7 +66,7 @@ public class GPSTracker extends Service implements LocationListener {
             } else {
                 this.canGetLocation = true;
 
-                // if GPS Enabled get lat/long using GPS Services
+
                 if (checkGPS) {
 
 
