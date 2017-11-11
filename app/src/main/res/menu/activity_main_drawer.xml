@@ -7,15 +7,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/gps"
             android:title="นำทางโดยรถโดยสาร" />
         <item
             android:id="@+id/nav_gallery"
-
+            android:icon="@drawable/bus"
             android:title="เส้นทางรถเมล์" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/can"
             android:title="เส้นทางรถกระป๋อง" />
 
     </group>
