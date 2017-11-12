@@ -57,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng myCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
         marker.setPosition(myCoordinates);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCoordinates,16));
     }
 
     @Override
