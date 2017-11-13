@@ -1,6 +1,5 @@
 package com.findtheway;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,6 +31,9 @@ public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, 
     MarkerOptions mo;
     Marker marker;
     LocationManager locationManager;
+    double lat;
+    double lon;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,6 @@ public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, 
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mo = new MarkerOptions().position(new LatLng(0, 0)).title("My Current Location");
         if (Build.VERSION.SDK_INT >= 23 && !isPermissionGranted()) {
             requestPermissions(PERMISSIONS, PERMISSION_ALL);
         } else requestLocation();
@@ -57,9 +58,13 @@ public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, 
     @Override
     public void onLocationChanged(Location location) {
         LatLng myCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
+        lat = new  location.getLatitude();
         marker.setPosition(myCoordinates);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCoordinates,17));
+        Intent intent = new Intent(GPSTracker.this,MapsActivity.class);
+        intent.putExtra("lat",myCoordinates);
+        startActivity(intent);
     }
 
     @Override

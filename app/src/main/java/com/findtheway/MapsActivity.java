@@ -9,10 +9,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,16 +37,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     MarkerOptions mo;
     Marker marker;
     LocationManager locationManager;
+    GPSTracker gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mo = new MarkerOptions().position(new LatLng(0, 0)).title("My Current Location");
+        Bundle Bundle = getIntent().getExtras();
+        float[] lat = Bundle.getFloat("lat");
+        Bundle Bundle2 = getIntent().getExtras();
+        float[] long = Bundle2.getFloat("lat");
+        marker.setPosition(lat);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(lat));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lat,16));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
         if (Build.VERSION.SDK_INT >= 23 && !isPermissionGranted()) {
             requestPermissions(PERMISSIONS, PERMISSION_ALL);
         } else requestLocation();
@@ -50,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         marker =  mMap.addMarker(mo);
+
     }
 
     @Override
