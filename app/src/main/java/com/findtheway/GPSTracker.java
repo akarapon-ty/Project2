@@ -2,109 +2,66 @@ package com.findtheway;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.app.Activity
 import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationParams;
+import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+import static com.findtheway.MapsActivity.PERMISSIONS;
+import static com.findtheway.MapsActivity.PERMISSION_ALL;
 
+public class MainActivity extends AppCompatActivity implements OnLocationUpdatedListener {
 
-    final static int PERMISSION_ALL = 1;
-    final static String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION};
-    private GoogleMap mMap;
-    MarkerOptions mo;
-    Marker marker;
-    LocationManager locationManager;
-    double lat;
-    double lon;
-
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= 23 && !isPermissionGranted()) {
-            requestPermissions(PERMISSIONS, PERMISSION_ALL);
-        } else requestLocation();
-        if (!isLocationEnabled())
-            showAlert(1);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        marker =  mMap.addMarker(mo);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        LatLng myCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
-        lat = new  location.getLatitude();
-        marker.setPosition(myCoordinates);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCoordinates,17));
-        Intent intent = new Intent(GPSTracker.this,MapsActivity.class);
-        intent.putExtra("lat",myCoordinates);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-    private void requestLocation() {
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        String provider = locationManager.getBestProvider(criteria, true);
-        locationManager.requestLocationUpdates(provider, 10000, 10, this);
-    }
-    private boolean isLocationEnabled() {
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    private boolean isPermissionGranted() {
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED || checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Log.v("mylog", "Permission is granted");
-            return true;
+    protected void onStart() {
+        super.onStart();
+        if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
+            SmartLocation.with(this)
+                    .location()
+                    .config(LocationParams.BEST_EFFORT)
+                    .provider(new LocationGooglePlayServicesWithFallbackProvider(this))
+                    .start(this);
         } else {
-            Log.v("mylog", "Permission not granted");
-            return false;
+            locationServiceUnavailable(1);
         }
     }
-    private void showAlert(final int status) {
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SmartLocation.with(this)
+                .location()
+                .stop();
+    }
+
+    @Override
+    public void onLocationUpdated(Location location) {
+        // TODO Do something when location was updated
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        float accuracy = location.getAccuracy();
+        float bearing = location.getBearing();
+        String provider = location.getProvider();
+    }
+
+    private void locationServiceUnavailable(final int status) {
+        // TODO Do something when location service is unavailable
         String message, title, btnText;
         if (status == 1) {
             message = "Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
@@ -116,7 +73,7 @@ public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, 
             title = "Permission access";
             btnText = "Grant";
         }
-        final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setCancelable(false);
         dialog.setTitle(title)
                 .setMessage(message)
@@ -137,5 +94,7 @@ public class GPSTracker extends FragmentActivity implements OnMapReadyCallback, 
                     }
                 });
         dialog.show();
+
+
     }
 }
