@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -78,5 +77,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),16));
     }
+    public static void main(String[] args){
+        Edge[] edges = {
+                new Edge(0,2,1),
+                new Edge(0,3,4),
+                new Edge(0,4,2),
+                new Edge(0,1,3),
+                new Edge(1,3,2),
+                new Edge(1,4,3),
 
+        };
+        Graph g = new Graph(edges);
+        g.calculateShortestDistance();
+
+        g.printresult();
+    }
 }
