@@ -18,7 +18,7 @@ import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWith
 import static com.findtheway.MapsActivity.PERMISSIONS;
 import static com.findtheway.MapsActivity.PERMISSION_ALL;
 
-public class MainActivity extends AppCompatActivity implements OnLocationUpdatedListener {
+public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
