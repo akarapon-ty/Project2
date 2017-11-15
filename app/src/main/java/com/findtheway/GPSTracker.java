@@ -1,8 +1,9 @@
 package com.findtheway;
-test
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.provider.Settings;
@@ -20,6 +21,7 @@ import static com.findtheway.MapsActivity.PERMISSION_ALL;
 
 public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedListener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +32,11 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
     protected void onStart() {
         super.onStart();
         if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
-            SmartLocation.with(this)
+             SmartLocation.with(this)
                     .location(new LocationGooglePlayServicesWithFallbackProvider(this))
                     .config(LocationParams.BEST_EFFORT)
                     .start(this);
+
         } else {
             locationServiceUnavailable(1);
         }
@@ -64,6 +67,7 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
     private void locationServiceUnavailable(final int status) {
         // TODO Do something when location service is unavailable
         String message, title, btnText;
+
         if (status == 1) {
             message = "Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
                     "use this app";
@@ -95,6 +99,7 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
                     }
                 });
         dialog.show();
+
 
     }
 

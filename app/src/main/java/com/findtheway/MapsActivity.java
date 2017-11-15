@@ -1,23 +1,14 @@
 package com.findtheway;
-test
+
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     double lat;
     double lon;
+    GPSTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setPosition(new LatLng(lat,lon));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),17));
+                gpsTracker.onStart();
         }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
