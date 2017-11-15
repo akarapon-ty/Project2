@@ -4,7 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Activity
+import android.app.Activity;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +23,7 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
     }
 
     @Override
@@ -31,16 +31,13 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
         super.onStart();
         if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
             SmartLocation.with(this)
-                    .location()
+                    .location(new LocationGooglePlayServicesWithFallbackProvider(this))
                     .config(LocationParams.BEST_EFFORT)
-                    .provider(new LocationGooglePlayServicesWithFallbackProvider(this))
                     .start(this);
         } else {
             locationServiceUnavailable(1);
         }
     }
-
-
 
     @Override
     protected void onStop() {
@@ -58,6 +55,10 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
         float accuracy = location.getAccuracy();
         float bearing = location.getBearing();
         String provider = location.getProvider();
+        Intent intent = new Intent(GPSTracker.this,MapsActivity.class);
+        intent.putExtra("lat",latitude);
+        intent.putExtra("lon",longitude);
+        startActivity(intent);
     }
 
     private void locationServiceUnavailable(final int status) {
@@ -95,6 +96,6 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
                 });
         dialog.show();
 
-
     }
+
 }
