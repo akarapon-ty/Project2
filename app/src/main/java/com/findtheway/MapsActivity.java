@@ -1,4 +1,5 @@
 package com.findtheway;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +38,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     MarkerOptions mo;
     Marker marker;
     LocationManager locationManager;
-    GPSTracker gps;
+    double lat,lon;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,22 +49,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Bundle Bundle = getIntent().getExtras();
-        float[] lat = Bundle.getFloat("lat");
-        Bundle Bundle2 = getIntent().getExtras();
-        float[] long = Bundle2.getFloat("lat");
-        marker.setPosition(lat);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lat));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lat,16));
+        mo = new MarkerOptions().position(new LatLng(0, 0)).title("My Current Location");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            }
+                Intent receiveIntent = getIntent();
+                lat = receiveIntent.getDoubleExtra("lat", lat);
+                lon = receiveIntent.getDoubleExtra("lon", lon);
+                Log.d("location after clicked", ""+lat+","+lon);
+                marker.setPosition(new LatLng(lat,lon));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),16));
+        }
         });
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
 
         if (Build.VERSION.SDK_INT >= 23 && !isPermissionGranted()) {
