@@ -90,6 +90,8 @@ public class GPSTracker extends AppCompatActivity implements OnLocationUpdatedLi
 
     protected void startSmartLocation() {
         if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
+            Intent intent = new Intent(GPSTracker.this,MapsActivity.class);
+            startActivity(intent);
             SmartLocation.with(this)
                     .location(new LocationGooglePlayServicesWithFallbackProvider(this))
                     .config(LocationParams.BEST_EFFORT)
