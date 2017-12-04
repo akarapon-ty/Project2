@@ -13,6 +13,7 @@ class Database extends SQLiteOpenHelper {
 
     public Database(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        SQLiteDatabase db = this.getWritableDatabase()
     }
 
     public void onCreate(SQLiteDatabase db) {
