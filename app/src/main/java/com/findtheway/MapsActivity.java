@@ -53,13 +53,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-    Database myDb;
+    SQLiteDatabase mDb;
+    Database mHelper;
     Cursor mCursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myDb = new Database(this);
+
+        mHelper = new Database(this);
+        mDb = mHelper.getWritableDatabase();
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
