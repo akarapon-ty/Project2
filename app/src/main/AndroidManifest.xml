@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GPSTracker"
+            android:name=".MapsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -42,10 +42,9 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <activity android:name=".MapsActivity"/>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAtPWYQ87dREdTFw_XkMx4g-QxJcorQOyo" />
+            android:value="AIzaSyC9Bb2ndjRnk0b_DQ3uZ2qtuMSu0h27OP0" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"

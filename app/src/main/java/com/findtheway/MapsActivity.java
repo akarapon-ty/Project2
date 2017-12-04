@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -19,20 +21,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
-
-import static com.findtheway.GPSTracker.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
@@ -46,27 +50,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     double latitude;
     double longitude;
-    GPSTracker gpsTracker;
-
+    MarkerOptions Marker2;
+    SQLiteDatabase mDb;
+    Database mHelper;
+    Cursor mCursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        mHelper = new Database(this);
+//        mDb = mHelper.getWritableDatabase();
+//        mHelper.onUpgrade(mDb, 1, 1);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mo = new MarkerOptions().position(new LatLng(0, 0)).title("My Current Location");
+        Marker2 = new MarkerOptions().position(new LatLng(0, 0)).title("My Current Location");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("location after clicked", ""+latitude+","+longitude);
-                marker.setPosition(new LatLng(latitude,longitude));
+
+                Smartonlocationclick();
+               marker.remove();
+                Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+                marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+//                Log.d("location after clicked", ""+latitude+","+longitude);
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
         }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,10 +97,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+//        mHelper = new Database(this);
+//        mDb = mHelper.getWritableDatabase();
+//        mHelper.onUpgrade(mDb, 1, 1);
+        Smartonlocationclick();
         mMap = googleMap;
-        marker =  mMap.addMarker(mo);
+        marker =  mMap.addMarker(Marker2);
         Log.d("location after clicked", ""+latitude+","+longitude);
-        marker.setPosition(new LatLng(latitude,longitude));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
     }
@@ -120,7 +142,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -135,7 +156,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED)
         {
-
 //            // Should we show an explanation?
 //            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
 //                    Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -147,7 +167,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            } else {
 //
 //                // No explanation needed, we can request the permission.
-
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
@@ -174,12 +193,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    protected void Smartonlocationclick() {
+        LocationParams param = new  LocationParams.Builder()
+                .setAccuracy(LocationAccuracy.HIGH)
+                .setInterval(100)
+                .build();
+        if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
+            SmartLocation.with(this)
+                    .location(new LocationGooglePlayServicesWithFallbackProvider(this))
+                    .config(param)
+                    .start(this);
+
+        } else {
+            locationServiceUnavailable(1);
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
         SmartLocation.with(this)
                 .location()
                 .stop();
+        mHelper.close();
+        mDb.close();
     }
 
     @Override
@@ -191,15 +228,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         float bearing = location.getBearing();
         String provider = location.getProvider();
         Log.d("location after clicked", ""+latitude+","+longitude);
-        marker.setPosition(new LatLng(latitude,longitude));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+        marker.remove();
+        Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+        marker = mMap.addMarker(Marker2);
     }
 
     private void locationServiceUnavailable(final int status) {
         // TODO Do something when location service is unavailable
         String message, title, btnText;
-
         if (status == 1) {
             message = "Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
                     "use this app";
@@ -231,9 +268,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
         dialog.show();
-
-
     }
-
 }
 
