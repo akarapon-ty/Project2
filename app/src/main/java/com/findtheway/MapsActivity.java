@@ -61,8 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mHelper = new Database(this);
-        mDb = mHelper.getWritableDatabase();
-        mHelper.onUpgrade(mDb, 1, 1);
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
