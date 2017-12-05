@@ -53,11 +53,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-    
+    SQLiteDatabase mDb;
+    Database mHelper;
+    Cursor mCursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mHelper = new Database(this);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -98,6 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 //        mHelper = new Database(this);
 //        mDb = mHelper.getWritableDatabase();
+//        mHelper.onUpgrade(mDb, 1, 1);
         Smartonlocationclick();
         mMap = googleMap;
         marker =  mMap.addMarker(Marker2);
@@ -112,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                new Edge(0,2,1),
 //                new Edge(0,3,4),
 //                new Edge(0,4,2),
-//                new Edge(0,1,3),
+//                new Edge(0,1,3),  AIzaSyAtPWYQ87dREdTFw_XkMx4g-QxJcorQOyox
 //                new Edge(1,3,2),
 //                new Edge(1,4,3),
 //
@@ -213,7 +217,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SmartLocation.with(this)
                 .location()
                 .stop();
-          }
+        mHelper.close();
+        mDb.close();
+    }
 
     @Override
     public void onLocationUpdated(Location location) {
