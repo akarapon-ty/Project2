@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -40,6 +38,18 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import android.os.Bundle;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
     final static String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -54,13 +64,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double longitude;
     MarkerOptions Marker2;
     SQLiteDatabase mDb;
-    Database mHelper;
+    DB mHelper;
     Cursor mCursor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mHelper = new Database(this);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -75,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View view) {
 
                 Smartonlocationclick();
-               marker.remove();
+                marker.remove();
                 Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
@@ -86,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
 //                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
 //                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
-        }
+            }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -94,14 +104,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        mHelper = new DB(this);
+        mDb = mHelper.getWritableDatabase();
+        mHelper.onUpgrade(mDb, 1, 1);
+
+        mCursor = mDb.rawQuery("SELECT " + DB.COL_NAME + ", "
+                + DB.COL_Lat + ", " + DB.COL_Lon + ", "
+                + DB.COL_Bus11 + ", " + DB.COL_Bus09 + "," + DB.COL_Bus10 +  " , " + DB.COL_Bus70 + " FROM " + DB.TABLE_NAME, null);
+
+        ArrayList<String> dirArray = new ArrayList<String>();
+        mCursor.moveToFirst();
+
+        while ( !mCursor.isAfterLast() ){
+            dirArray.add("Name : " + mCursor.getString
+                    (mCursor.getColumnIndex(DB.COL_NAME)) + "\n"
+                    + "Job : " + mCursor.getString(mCursor.getColumnIndex
+                    (DB.COL_JOB)) + "\n"
+                    + "Age : " + mCursor.getString(mCursor.getColumnIndex
+                    (DB.COL_AGE)) + "\n"
+                    + "Gender : " + mCursor.getString(mCursor.getColumnIndex
+                    (DB.COL_GENDER)));
+            mCursor.moveToNext();
+        }
+
     }
+
+
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 //        mHelper = new Database(this);
 //        mDb = mHelper.getWritableDatabase();
-//        mHelper.onUpgrade(mDb, 1, 1);
         Smartonlocationclick();
         mMap = googleMap;
         marker =  mMap.addMarker(Marker2);
@@ -116,7 +151,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                new Edge(0,2,1),
 //                new Edge(0,3,4),
 //                new Edge(0,4,2),
-//                new Edge(0,1,3),  AIzaSyAtPWYQ87dREdTFw_XkMx4g-QxJcorQOyox
+//                new Edge(0,1,3),
 //                new Edge(1,3,2),
 //                new Edge(1,4,3),
 //
@@ -217,8 +252,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SmartLocation.with(this)
                 .location()
                 .stop();
-        mHelper.close();
-        mDb.close();
     }
 
     @Override
