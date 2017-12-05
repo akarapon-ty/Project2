@@ -15,6 +15,12 @@ class Database extends SQLiteOpenHelper {
     public static final String COL_NAME = "Data_station";
     public static final String COL_Latitude = "Latitude";
     public static final String COL_Longitude = "Longitude";
+    public static final String Bus_line11 = "Line11";
+    public static final String Bus_line09 = "Line09";
+    public static final String Bus_line10 = "Line10";
+    public static final String Bus_line70 = "Line70";
+
+
     Context context;
 
     public Database(Context ctx) {
@@ -26,7 +32,8 @@ class Database extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_NAME + " TEXT,  " + COL_Latitude  + " DOUBLE, "
-                + COL_Longitude + " DOUBLE);");
+                + COL_Longitude + " DOUBLE, " + Bus_line11 + " INTEGER, " + Bus_line09 + " INTEGER, "
+                + Bus_line10 + " INTEGER, " + Bus_line70 + " INEGER);");
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(
@@ -40,9 +47,11 @@ class Database extends SQLiteOpenHelper {
                     String[] str = readLine.split(",");
                     db.execSQL("INSERT INTO " + TABLE_NAME
                             + " (" + COL_NAME + ", " + COL_Latitude
-                            + ", " + COL_Longitude  + ") VALUES ('" + str[0]
-                            + "', " + str[1]
-                            + ", " + str[2] + ");");
+                            + ", " + COL_Longitude + ", " + Bus_line11 + ", " + Bus_line09 + ", "
+                            + Bus_line10 + ", " + Bus_line70 + ") VALUES ('" + str[0]
+                            + "', " + str[1] + ", " + str[2]
+                            + "', " + str[3] + ", " + str[4]
+                            + "', " + str[5] + ", " + str[6] + ");");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

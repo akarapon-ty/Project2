@@ -16,7 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.ArrayList;
-
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,8 +63,54 @@ protected void onCreate(Bundle savedInstanceState) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 }
-
-
+//
+//    public class Main extends Activity {
+//        SQLiteDatabase mDb;
+//        Database mHelper;
+//        Cursor mCursor;
+//
+//        public void onCreate(Bundle savedInstanceState) {
+//            super.onCreate(savedInstanceState);
+//            requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            setContentView(R.layout.main);
+//
+//            ListView listView1 = (ListView)findViewById(R.id.listview1);
+//
+//            mHelper = new Database(this);
+//            mDb = mHelper.getWritableDatabase();
+//            mHelper.onUpgrade(mDb, 1, 1);
+//
+//            mCursor = mDb.rawQuery("SELECT " + Database.COL_NAME + ", "
+//                    + Database.COL_Latitude + ", " + Database.COL_Longitude + ", "
+//                    + Database.Bus_line09 + " FROM " + Database.TABLE_NAME, null);
+//
+//            ArrayList<String> dirArray = new ArrayList<String>();
+//            mCursor.moveToFirst();
+//
+//            while ( !mCursor.isAfterLast() ){
+//                dirArray.add("Name : " + mCursor.getString
+//                        (mCursor.getColumnIndex(Database.COL_NAME)) + "\n"
+//                        + "LAT : " + mCursor.getString(mCursor.getColumnIndex
+//                        (Database.COL_Latitude)) + "\n"
+//                        + "LONG : " + mCursor.getString(mCursor.getColumnIndex
+//                        (Database.COL_Longitude)) + "\n"
+//                        + "BUS : " + mCursor.getString(mCursor.getColumnIndex
+//                        (Database.Bus_line09)));
+//                mCursor.moveToNext();
+//            }
+//
+//            ArrayAdapter<String> adapterDir =
+//                    new ArrayAdapter<String>(getApplicationContext()
+//                            , android.R.layout.simple_list_item_1, dirArray);
+//            listView1.setAdapter(adapterDir);
+//        }
+//
+//        public void onPause() {
+//            super.onPause();
+//            mHelper.close();
+//            mDb.close();
+//        }
+//    }
 
 
     @Override
