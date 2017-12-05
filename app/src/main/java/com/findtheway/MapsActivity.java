@@ -119,19 +119,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         while ( !mCursor.isAfterLast() ){
             dirArray.add("Name : " + mCursor.getString
                     (mCursor.getColumnIndex(DB.COL_NAME)) + "\n"
-                    + "Job : " + mCursor.getString(mCursor.getColumnIndex
-                    (DB.COL_JOB)) + "\n"
-                    + "Age : " + mCursor.getString(mCursor.getColumnIndex
-                    (DB.COL_AGE)) + "\n"
-                    + "Gender : " + mCursor.getString(mCursor.getColumnIndex
-                    (DB.COL_GENDER)));
+                    );
             mCursor.moveToNext();
         }
 
     }
-
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

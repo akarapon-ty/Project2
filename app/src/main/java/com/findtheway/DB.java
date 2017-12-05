@@ -35,8 +35,10 @@ public class DB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_NAME + " ,TEXT, " + COL_Lat + " DOUBLE, "
-                + COL_Lon  + " DOUBLE, " + COL_Bus11 + " INTEGER, " + COL_Bus09 + "INTEGER ," + COL_Bus10 + "INTEGER ,"+ COL_Bus70 + "INTEGER );");
+                + COL_NAME + "TEXT, " + COL_Lat + " DOUBLE, "
+                + COL_Lon  + " DOUBLE, " + COL_Bus11 + " INTEGER, "
+                + COL_Bus09 + "INTEGER," + COL_Bus10 + "INTEGER,"
+                + COL_Bus70 + "INTEGER);");
 
 
         try {
