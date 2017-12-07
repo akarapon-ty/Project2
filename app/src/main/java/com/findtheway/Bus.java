@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Ty on 12/6/2017.
  */
 
-public class st_bus {
+public class Bus {
     private String line;
     private String Trip;
     private String Polyline;

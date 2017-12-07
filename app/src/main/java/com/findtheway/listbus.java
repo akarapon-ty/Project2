@@ -4,12 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,7 +14,7 @@ import java.util.ArrayList;
 
 public class listbus extends AppCompatActivity {
     ListView lst;
-    st_bus b = new st_bus();
+    Bus b = new Bus();
     SQLiteDatabase mDb;
     DB mHelper;
     Cursor mCursor;
@@ -36,11 +31,11 @@ public class listbus extends AppCompatActivity {
         mCursor = mDb.rawQuery("SELECT " + DB.COL_Line + ", "
                 + DB.COL_Polyline + ", " + DB.COL_Trip + " FROM " + DB.TABLE_NAME, null);
 
-        ArrayList<st_bus> dirArray = new ArrayList<>();
+        ArrayList<Bus> dirArray = new ArrayList<>();
         mCursor.moveToFirst();
 
         while ( !mCursor.isAfterLast() ){
-            st_bus b = new st_bus();
+            Bus b = new Bus();
             b.setLine(mCursor.getString(mCursor.getColumnIndex(DB.COL_Line)));
             b.setPolyline(mCursor.getString(mCursor.getColumnIndex(DB.COL_Polyline)));
             b.setTrip(mCursor.getString(mCursor.getColumnIndex(DB.COL_Trip)));
