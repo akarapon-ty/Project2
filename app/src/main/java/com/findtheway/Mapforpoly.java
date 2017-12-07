@@ -77,12 +77,14 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
             public void onClick(View view) {
 
                 Smartonlocationclick();
+
                 marker.remove();
                 Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
+
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -121,11 +123,6 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
         mMap = googleMap;
         marker =  mMap.addMarker(Marker2);
         Log.d("location after clicked", ""+latitude+","+longitude);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),10));
-
         List<LatLng> decodedPath = PolyUtil.decode(b.getPolyline());
         mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
                 .width(20)
@@ -224,7 +221,7 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
     protected void Smartonlocationclick() {
         LocationParams param = new  LocationParams.Builder()
                 .setAccuracy(LocationAccuracy.HIGH)
-                .setInterval(100)
+                .setInterval(10000)
                 .build();
         if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
             SmartLocation.with(this)
@@ -258,6 +255,8 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
         Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
         marker = mMap.addMarker(Marker2);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
     }
 
     private void locationServiceUnavailable(final int status) {

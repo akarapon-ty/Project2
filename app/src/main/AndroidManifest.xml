@@ -44,13 +44,14 @@
         -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyC9Bb2ndjRnk0b_DQ3uZ2qtuMSu0h27OP0" />
+            android:value="AIzaSyAtPWYQ87dREdTFw_XkMx4g-QxJcorQOyo" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"
             tools:replace="android:value"/>
         <activity android:name=".DB_listcan"/>
         <activity android:name=".DB_listbus"/>
+        <activity android:name=".DB_listnavi"/>
         <activity android:name=".Mapforpoly"/>
 
 

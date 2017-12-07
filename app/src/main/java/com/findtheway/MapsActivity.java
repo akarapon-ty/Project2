@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startSmartLocation();
         setContentView(R.layout.activity_main);
 
 
@@ -74,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -96,7 +97,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startActivity(intent);
                 }
                 else if (item_id == R.id.navi){
-
+                    Intent intent = new Intent(MapsActivity.this,DB_listnavi.class);
+                    startActivity(intent);
                 }
                 return false;
             }
@@ -110,14 +112,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 //        mHelper = new Database(this);
 //        mDb = mHelper.getWritableDatabase();
-        Smartonlocationclick();
+    startSmartLocation();
         mMap = googleMap;
         marker =  mMap.addMarker(Marker2);
         Log.d("location after clicked", ""+latitude+","+longitude);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+
     }
 //    public static void main(String[] args){
 //        Edge[] edges = {
@@ -206,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void Smartonlocationclick() {
         LocationParams param = new  LocationParams.Builder()
                 .setAccuracy(LocationAccuracy.HIGH)
-                .setInterval(100)
+                .setInterval(10000)
                 .build();
         if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
             SmartLocation.with(this)
@@ -240,6 +239,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
         marker = mMap.addMarker(Marker2);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
     }
 
     private void locationServiceUnavailable(final int status) {
