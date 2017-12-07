@@ -8,9 +8,10 @@ import java.util.ArrayList;
 
 public class Bus {
     private String line;
-    private String Trip;
+    private String PolylineB;
     private String Polyline;
     private String Level;
+    private String LevelB;
     public String getLevel() {
         return Level;
     }
@@ -29,15 +30,6 @@ public class Bus {
     }
 
 
-    public String getTrip() {
-        return Trip;
-    }
-
-    public void setTrip(String trip) {
-        Trip = trip;
-    }
-
-
     public String getLine() {
         return line;
     }
@@ -47,7 +39,19 @@ public class Bus {
     }
 
 
+    public String getPolylineB() {
+        return PolylineB;
+    }
 
+    public void setPolylineB(String polylineB) {
+        PolylineB = polylineB;
+    }
 
+    public String getLevelB() {
+        return LevelB;
+    }
 
+    public void setLevelB(String levelB) {
+        LevelB = levelB;
+    }
 }

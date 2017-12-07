@@ -7,20 +7,17 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
@@ -66,10 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-//    SQLiteDatabase mDb;
-//    DB mHelper;
-//    Cursor mCursor;
-
+        
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,40 +101,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int item_id = item.getItemId();
-                if (item_id == R.id.nav_slideshow) {
-                    Intent intent = new Intent(MapsActivity.this, listmanu.class);
-                    startActivity(intent);
-                } else if (item_id == R.id.nav_gallery) {
-
-                }
-                return false;
-            }
-        });
-
-//        mHelper = new DB(this);
-//        mDb = mHelper.getWritableDatabase();
-//        mHelper.onUpgrade(mDb, 1, 1);
-
-//        mCursor = mDb.rawQuery("SELECT " + DB.COL_NAME + ", "
-//                + DB.COL_Lat + ", " + DB.COL_Lon + ", "
-//                + DB.COL_Bus11 + ", " + DB.COL_Bus09 + "," + DB.COL_Bus10 +  " , " + DB.COL_Bus70 + " FROM " + DB.TABLE_NAME, null);
-
-//        ArrayList<String> dirArray = new ArrayList<String>();
-//        mCursor.moveToFirst();
-//
-//        while ( !mCursor.isAfterLast() ){
-//            dirArray.add("Name : " + mCursor.getString
-//                    (mCursor.getColumnIndex(DB.COL_NAME)) + "\n"
-//                    );
-//            mCursor.moveToNext();
-//        }
 
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

@@ -49,7 +49,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"
             tools:replace="android:value"/>
-        <activity android:name=".listmanu"/>
+        <activity android:name=".DB_listcan"/>
 
 
     </application>

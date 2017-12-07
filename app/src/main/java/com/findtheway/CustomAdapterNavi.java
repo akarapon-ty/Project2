@@ -11,24 +11,24 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by SUTHAWEEWERAPHONG on 12/7/2017.
+ * Created by Ty on 12/7/2017.
  */
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapterNavi extends BaseAdapter {
     Context mContext;
-    ArrayList<Bus> busArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
-    public CustomAdapter(Context context, ArrayList<Bus> busArray){
+    ArrayList<Navi> naviArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
+    public CustomAdapterNavi(Context context, ArrayList<Navi> naviArray){
         this.mContext = context;
-        this.busArray = busArray;
+        this.naviArray = naviArray;
     }
     @Override
     public int getCount() {
-        return busArray.size();
+        return naviArray.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return busArray.get(position);
+        return naviArray.get(position);
     }
 
     @Override
@@ -48,11 +48,10 @@ public class CustomAdapter extends BaseAdapter {
         if(view == null)  // <- ถ้ายังไม่เคยถูกสร้าง
             // สร้าง view ที่จะแสดงใน ListView โดยการเรียกใช้ inflater สั่ง inflate layput มาจากไฟล์ที่ชื่อ simple_list_item_1 (ของ android)
             view = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-        Log.d("test23232",""+view);
+        Log.d("testCustomAdapterDis",""+view);
         // (หากต้องการให้เป็นตัวอื่นที่ไม่ใช่ TextView ธรรมดา ก็จำเป็นต้องสร้าง xml อันใหม่ขึ้นมาใน Folder Layout แล้ว inflate ไฟล์นั้นแทน)
-
-        TextView textView = (TextView)view.findViewById(R.id.list);
-        Bus b = busArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
+        TextView textView = (TextView)view.findViewById(android.R.id.text1);
+        Navi b = naviArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
         String text = b.getLine();      // อันนี้คือตัวแปร text ป็นประเภท String ที่ได้จากการเอาข้อมูล line ออกมาจาก Bus
         textView.setText(text);
         return view;
