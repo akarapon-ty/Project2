@@ -11,24 +11,24 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Ty on 12/7/2017.
+ * Created by SUTHAWEEWERAPHONG on 12/7/2017.
  */
 
-public class CustomAdapterNavi extends BaseAdapter {
+public class CustomAdaptercan extends BaseAdapter {
     Context mContext;
-    ArrayList<Navi> naviArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
-    public CustomAdapterNavi(Context context, ArrayList<Navi> naviArray){
+    ArrayList<Bus> busArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
+    public CustomAdaptercan(Context context, ArrayList<Bus> busArray){
         this.mContext = context;
-        this.naviArray = naviArray;
+        this.busArray = busArray;
     }
     @Override
     public int getCount() {
-        return naviArray.size();
+        return busArray.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return naviArray.get(position);
+        return busArray.get(position);
     }
 
     @Override
@@ -48,12 +48,14 @@ public class CustomAdapterNavi extends BaseAdapter {
         if(view == null)  // <- ถ้ายังไม่เคยถูกสร้าง
             // สร้าง view ที่จะแสดงใน ListView โดยการเรียกใช้ inflater สั่ง inflate layput มาจากไฟล์ที่ชื่อ simple_list_item_1 (ของ android)
             view = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-        Log.d("testCustomAdapterDis",""+view);
+        Log.d("testCustomAdapterbus",""+view);
         // (หากต้องการให้เป็นตัวอื่นที่ไม่ใช่ TextView ธรรมดา ก็จำเป็นต้องสร้าง xml อันใหม่ขึ้นมาใน Folder Layout แล้ว inflate ไฟล์นั้นแทน)
+
         TextView textView = (TextView)view.findViewById(android.R.id.text1);
-        Navi b = naviArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
+        Bus b = busArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
         String text = b.getLine();      // อันนี้คือตัวแปร text ป็นประเภท String ที่ได้จากการเอาข้อมูล line ออกมาจาก Bus
         textView.setText(text);
+//        textView.setOnContextClickListener();
         return view;
     }
 }

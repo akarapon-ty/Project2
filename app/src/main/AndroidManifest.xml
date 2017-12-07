@@ -50,6 +50,8 @@
             android:value="@integer/google_play_services_version"
             tools:replace="android:value"/>
         <activity android:name=".DB_listcan"/>
+        <activity android:name=".DB_listbus"/>
+        <activity android:name=".Mapforpoly"/>
 
 
     </application>

@@ -4,15 +4,16 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,6 +31,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+
+import java.util.List;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -37,12 +42,14 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
+import static android.graphics.drawable.GradientDrawable.LINE;
+
+public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
-    final static String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    final static String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION};
     static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 5555;
-
+    static  String polyline;
     private GoogleMap mMap;
     MarkerOptions mo;
     Marker marker;
@@ -50,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
+    Bus b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +97,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int item_id = item.getItemId();
                 if (item_id == R.id.listcan) {
-                    Intent intent = new Intent(MapsActivity.this, DB_listcan.class);
+                    Intent intent = new Intent(Mapforpoly.this, DB_listcan.class);
                     startActivity(intent);
                 } else if (item_id == R.id.listbus) {
-                    Intent intent = new Intent(MapsActivity.this,DB_listbus.class);
+                    Intent intent = new Intent(Mapforpoly.this,DB_listbus.class);
                     startActivity(intent);
                 }
                 else if (item_id == R.id.navi){
@@ -101,8 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
-
-
+        b = getIntent().getParcelableExtra("x");
     }
 
 
@@ -117,8 +124,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),17));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),10));
+
+        List<LatLng> decodedPath = PolyUtil.decode(b.getPolyline());
+        mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
+                .width(20)
+                .color(Color.RED));
+
+        List<LatLng> decodedPath2 = PolyUtil.decode(b.getPolylineB());
+        mMap.addPolyline(new PolylineOptions().addAll(decodedPath2)
+                .width(20)
+                .color(Color.BLUE));
     }
+
 //    public static void main(String[] args){
 //        Edge[] edges = {
 //                new Edge(0,2,1),
@@ -178,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //                // No explanation needed, we can request the permission.
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
 
 //                 MY_PERMISSIONS_REQUEST_ACCESS_LOCATION is an

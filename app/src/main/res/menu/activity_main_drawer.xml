@@ -6,15 +6,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/navi"
             android:icon="@drawable/gps"
             android:title="นำทางโดยรถโดยสาร" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/listbus"
             android:icon="@drawable/bus"
             android:title="เส้นทางรถเมล์" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/listcan"
             android:icon="@drawable/can"
             android:title="เส้นทางรถกระป๋อง" />
 
