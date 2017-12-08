@@ -42,8 +42,6 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-import static android.graphics.drawable.GradientDrawable.LINE;
-
 public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
     final static String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -80,7 +78,7 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
 
                 marker.remove();
                 Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.track)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
@@ -253,7 +251,7 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
         Log.d("location after clicked", ""+latitude+","+longitude);
         marker.remove();
         Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.track)).title("MyLocation"));
         marker = mMap.addMarker(Marker2);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));

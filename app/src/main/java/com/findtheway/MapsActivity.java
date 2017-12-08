@@ -30,12 +30,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.nearby.messages.Distance;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
+import static java.lang.Math.*;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
@@ -50,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-
+    double dis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Smartonlocationclick();
                 marker.remove();
                 Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.track)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
@@ -237,7 +240,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("location after clicked", ""+latitude+","+longitude);
         marker.remove();
         Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)).title("MyLocation"));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.track)).title("MyLocation"));
         marker = mMap.addMarker(Marker2);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
@@ -278,5 +281,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
         dialog.show();
     }
+//    public cal()
+//    {
+//        asin()
+//        return;
+//    }
 }
 
