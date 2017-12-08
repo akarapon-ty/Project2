@@ -33,6 +33,7 @@ public class DBcan extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("CREATE TABLE " + TABLE_NAME
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_Line + " TEXT, " + COL_Polyline + " TEXT,"

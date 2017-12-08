@@ -34,11 +34,12 @@ public class DBnavi extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("CREATE TABLE " + TABLE_NAME
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_Line + " TEXT, " + COL_ID + " TEXT, "
-                + COL_Name + " TEXT, " + COL_Lat + " TEXT, "
-                + COL_Lon + " TEXT, " + COL_Trip + " TEXT);");
+                + COL_Name + " TEXT, " + COL_Lat + " DOUBLE, "
+                + COL_Lon + " DOUBLE, " + COL_Trip + " TEXT);");
 
         try {
             BufferedReader br = new BufferedReader(
@@ -55,7 +56,7 @@ public class DBnavi extends SQLiteOpenHelper {
                             + ", " + COL_Name + ", " + COL_Lat
                             + ", " + COL_Lon + ", " + COL_Trip + ") " + "VALUES ('" + str[0]
                             + "', '" + str[1] + "', '" + str[2]
-                            + "', '" + str[3] + "', '"  + str[4] + "', '" + str[5] + "');");
+                            + "', " + str[3] + ", "  + str[4] + ", '" + str[5] + "');");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

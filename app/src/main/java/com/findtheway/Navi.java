@@ -12,10 +12,12 @@ public class Navi implements Parcelable {
     private String ID;
     private String Name;
     private String Trip;
-    private String Lat;
-    private String Lon;
-    public Navi(){
+    private Double Lat;
+    private Double Lon;
+    private Double Dis;
 
+
+    public Navi(){
     }
 
     public String getLine() {
@@ -36,16 +38,16 @@ public class Navi implements Parcelable {
     public void setName(String name) {
         Name = name;
     }
-    public String getLat() {
+    public Double getLat() {
         return Lat;
     }
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         Lat = lat;
     }
-    public String getLon() {
+    public Double getLon() {
         return Lon;
     }
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         Lon = lon;
     }
     public String getTrip() {
@@ -56,6 +58,13 @@ public class Navi implements Parcelable {
         Trip = trip;
     }
 
+    public Double getDis() {
+        return Dis;
+    }
+
+    public void setDis(Double dis) {
+        Dis = dis;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -65,17 +74,19 @@ public class Navi implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(Line);
         dest.writeString(ID);
-        dest.writeString(Lat);
-        dest.writeString(Lon);
+        dest.writeDouble(Lat);
+        dest.writeDouble(Lon);
         dest.writeString(Trip);
+        dest.writeDouble(Dis);
     }
 
     private Navi(Parcel in){
         this.Line = in.readString();
         this.ID = in.readString();
-        this.Lat = in.readString();
-        this.Lon = in.readString();
+        this.Lat = in.readDouble();
+        this.Lon = in.readDouble();
         this.Trip = in.readString();
+        this.Dis = in.readDouble();
     }
 
     public static final Parcelable.Creator<Navi> CREATOR = new Parcelable.Creator<Navi>() {
@@ -90,6 +101,7 @@ public class Navi implements Parcelable {
             return new Navi[size];
         }
     };
+
 
 
 }

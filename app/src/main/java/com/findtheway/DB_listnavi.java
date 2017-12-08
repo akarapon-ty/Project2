@@ -31,7 +31,7 @@ public class DB_listnavi extends AppCompatActivity {
 
         mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
                 + DBnavi.COL_ID + ", " + DBnavi.COL_Name + ", " + DBnavi.COL_Lat+ ", "
-                + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME + " WHERE " + DBnavi.COL_Trip + "='go'", null);
+                + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME , null);
 
         ArrayList<Navi> dirArray = new ArrayList<>();
         mCursor.moveToFirst();
@@ -41,8 +41,8 @@ public class DB_listnavi extends AppCompatActivity {
             b.setLine(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Line)));
             b.setID(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_ID)));
             b.setName(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Name)));
-            b.setLat(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Lat)));
-            b.setLon(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Lon)));
+            b.setLat(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lat)));
+            b.setLon(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lon)));
             b.setTrip(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Trip)));
             dirArray.add(b);
             mCursor.moveToNext();
