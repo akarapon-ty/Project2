@@ -51,11 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     final static String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION};
     static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 5555;
-    SQLiteDatabase mDb;
-    DBnavi mHelper;
-    ListView lst;
-    Navi b = new Navi();
-    Cursor mCursor;
+
     private GoogleMap mMap;
     MarkerOptions mo;
     Marker marker;
@@ -63,36 +59,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-    double dis;
-    Location location;
-    final ArrayList<Navi> stationarray = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startSmartLocation();
         setContentView(R.layout.activity_main);
-        mHelper = new DBnavi(this);
-        mDb = mHelper.getWritableDatabase();
-        mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
-                + DBnavi.COL_ID + ", " + DBnavi.COL_Name + ", " + DBnavi.COL_Lat+ ", "
-                + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME , null);
-        final ArrayList<Navi> dirArray = new ArrayList<>();
 
-        mCursor.moveToFirst();
-
-        while ( !mCursor.isAfterLast() ){
-            Navi b = new Navi();
-            b.setLine(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Line)));
-            b.setID(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_ID)));
-            b.setName(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Name)));
-            b.setLat(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lat)));
-            b.setLon(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lon)));
-            b.setTrip(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Trip)));
-            dirArray.add(b);
-            mCursor.moveToNext();
-        }
-        Log.d("test databus",dirArray.size()+", "+dirArray.get(0).getName());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -113,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-                cal(dirArray,stationarray);
+
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,7 +115,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
-
 
     }
 
@@ -316,38 +289,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
         dialog.show();
     }
-    void cal(ArrayList<Navi> dirArray,ArrayList<Navi> stationarray)
-   {    double d;
-    int i;
-    int k=0;
-    int j=0;
-    double R= 6371e3;
-
-
-       double lat=toRadians(latitude);
-            double lon=toRadians(longitude);
-          for(i=0;i<dirArray.size();i++) {
-              double lat2 =dirArray.get(i).getLat();
-              double lon2 =dirArray.get(i).getLon();
-              lat2 = toRadians(lat2);
-              lon2 = toRadians(lon2);
-//              Log.d("check lat lon",""+ lat +  "," + lon + ", " + lat2 + ", " + lon2);
-
-              double a = (sin((lat2-lat)/2)*sin((lat2-lat)/2))+(cos(lat)*(cos(lat2)*sin((lon2-lon)/2)*sin((lon2-lon)/2)));
-              double c = 2*atan2(sqrt(a),sqrt(1-a));
-//              Log.d("check c",""+c );
-
-              d = R*c;
-              dirArray.get(i).setDis(d);
-
-              if(d<1000)
-              {
-                stationarray.add(dirArray.get(i));
-                  Log.d("check dis",""+stationarray.get(k).getDis() );
-                  k++;
-              }
-          }
-
+    public double getLongitude() {
+        startSmartLocation();
+        return longitude;
     }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
+    public double getLatitude() {
+        startSmartLocation();
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+
 }
 

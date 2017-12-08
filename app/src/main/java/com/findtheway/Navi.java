@@ -72,21 +72,23 @@ public class Navi implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Line);
-        dest.writeString(ID);
-        dest.writeDouble(Lat);
-        dest.writeDouble(Lon);
-        dest.writeString(Trip);
-        dest.writeDouble(Dis);
+//        dest.writeString(Line);
+//        dest.writeString(ID);
+        dest.writeString(Name);
+//        dest.writeDouble(Lat);
+//        dest.writeDouble(Lon);
+//        dest.writeString(Trip);
+//        dest.writeDouble(Dis);
     }
 
     private Navi(Parcel in){
-        this.Line = in.readString();
-        this.ID = in.readString();
-        this.Lat = in.readDouble();
-        this.Lon = in.readDouble();
-        this.Trip = in.readString();
-        this.Dis = in.readDouble();
+//        this.Line = in.readString();
+//        this.ID = in.readString();
+        this.Name = in.readString();
+//        this.Lat = in.readDouble();
+//        this.Lon = in.readDouble();
+//        this.Trip = in.readString();
+//        this.Dis = in.readDouble();
     }
 
     public static final Parcelable.Creator<Navi> CREATOR = new Parcelable.Creator<Navi>() {

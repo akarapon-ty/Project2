@@ -53,7 +53,7 @@
         <activity android:name=".DB_listbus"/>
         <activity android:name=".DB_listnavi"/>
         <activity android:name=".Mapforpoly"/>
-
+        <activity android:name=".Mapcal"/>
 
     </application>
 

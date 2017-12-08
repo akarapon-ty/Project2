@@ -1,10 +1,13 @@
 package com.findtheway;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -29,21 +32,14 @@ public class DB_listnavi extends AppCompatActivity {
         mDb = mHelper.getWritableDatabase();
         mHelper.onUpgrade(mDb, 1, 1);
 
-        mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
-                + DBnavi.COL_ID + ", " + DBnavi.COL_Name + ", " + DBnavi.COL_Lat+ ", "
-                + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME , null);
+        mCursor = mDb.rawQuery("SELECT DISTINCT " + DBnavi.COL_Name + " FROM " + DBnavi.TABLE_NAME , null);
 
         ArrayList<Navi> dirArray = new ArrayList<>();
         mCursor.moveToFirst();
 
         while ( !mCursor.isAfterLast() ){
             Navi b = new Navi();
-            b.setLine(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Line)));
-            b.setID(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_ID)));
             b.setName(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Name)));
-            b.setLat(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lat)));
-            b.setLon(mCursor.getDouble(mCursor.getColumnIndex(DBnavi.COL_Lon)));
-            b.setTrip(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Trip)));
             dirArray.add(b);
             mCursor.moveToNext();
         }
@@ -51,5 +47,15 @@ public class DB_listnavi extends AppCompatActivity {
 //        Log.d("test datanavi",dirArray.size()+", "+dirArray.get(0).getLine());
         ListView listView = (ListView)findViewById(R.id.list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Navi b = (Navi) adapter.getItem(i);
+                Log.d("testinside","pass");
+                Intent intent = new Intent(DB_listnavi.this,Mapcal.class);
+                intent.putExtra("x",b);
+                startActivity(intent);
+            }
+        });
     }
 }

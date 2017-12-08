@@ -50,6 +50,7 @@ public class DB_listcan extends AppCompatActivity {
             dirArray.add(b);
             mCursor.moveToNext();
         }
+
        final CustomAdaptercan adapter = new CustomAdaptercan(this,dirArray);
 //        Log.d("test datacan",dirArray.size()+", "+dirArray.get(0).getLine());
         ListView listView = (ListView)findViewById(R.id.list);
