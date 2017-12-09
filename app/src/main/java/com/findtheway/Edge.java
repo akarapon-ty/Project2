@@ -9,6 +9,9 @@ public class Edge {
     private int toNodeIndex;
     private int length;
 
+
+
+
     public Edge(int fromNodeIndex, int toNodeIndex, int length){
         this.fromNodeIndex = fromNodeIndex;
         this.toNodeIndex = toNodeIndex;
@@ -34,5 +37,7 @@ public class Edge {
             return this.fromNodeIndex;
         }
     }
-
+    public void setFromNodeIndex(int fromNodeIndex) {
+        this.fromNodeIndex = fromNodeIndex;
+    }
 }

@@ -8,28 +8,38 @@ import android.os.Parcelable;
  */
 
 public class Navi implements Parcelable {
-    private String Line;
-    private String ID;
+    private int Line;
+    private int ID;
     private String Name;
     private String Trip;
     private Double Lat;
     private Double Lon;
-    private Double Dis;
+    private double Dis;
+
+    public double getDis() {
+        return Dis;
+    }
+
+    public void setDis(double dis) {
+        Dis = dis;
+    }
+
+
 
 
     public Navi(){
     }
 
-    public String getLine() {
+    public int getLine() {
         return Line;
     }
-    public void setLine(String line) {
+    public void setLine(int line) {
         Line = line;
     }
-    public String getID() {
+    public int getID() {
         return ID;
     }
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
     public String getName() {
@@ -58,13 +68,7 @@ public class Navi implements Parcelable {
         Trip = trip;
     }
 
-    public Double getDis() {
-        return Dis;
-    }
 
-    public void setDis(Double dis) {
-        Dis = dis;
-    }
     @Override
     public int describeContents() {
         return 0;

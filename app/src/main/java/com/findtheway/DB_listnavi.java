@@ -52,7 +52,7 @@ public class DB_listnavi extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Navi b = (Navi) adapter.getItem(i);
                 Log.d("testinside","pass");
-                Intent intent = new Intent(DB_listnavi.this,Mapcal.class);
+                Intent intent = new Intent(DB_listnavi.this,Mapforpoly2.class);
                 intent.putExtra("x",b);
                 startActivity(intent);
             }

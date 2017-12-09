@@ -15,7 +15,7 @@ import android.util.Log;
  */
 
 public class DBnavi extends SQLiteOpenHelper {
-    private static final String DB_NAME = "distance";
+    private static final String DB_NAME = "navi";
     private static final int DB_VERSION = 1;
 
     public static final String TABLE_NAME = "st";
@@ -37,14 +37,14 @@ public class DBnavi extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("CREATE TABLE " + TABLE_NAME
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_Line + " TEXT, " + COL_ID + " TEXT, "
-                + COL_Name + " TEXT, " + COL_Lat + " DOUBLE, "
-                + COL_Lon + " DOUBLE, " + COL_Trip + " TEXT);");
+                + COL_Line + " INTEGER," + COL_ID + " INTEGER,"
+                + COL_Name + " TEXT," + COL_Lat + " DOUBLE,"
+                + COL_Lon + " DOUBLE," + COL_Trip + " TEXT);");
 
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(
-                            "sty.csv")));
+                            "st.csv")));
             String readLine = null;
             readLine = br.readLine();
 
@@ -54,8 +54,8 @@ public class DBnavi extends SQLiteOpenHelper {
                     db.execSQL("INSERT INTO " + TABLE_NAME
                             + " (" + COL_Line + ", " + COL_ID
                             + ", " + COL_Name + ", " + COL_Lat
-                            + ", " + COL_Lon + ", " + COL_Trip + ") " + "VALUES ('" + str[0]
-                            + "', '" + str[1] + "', '" + str[2]
+                            + ", " + COL_Lon + ", " + COL_Trip + ") " + "VALUES (" + str[0]
+                            + ", " + str[1] + ", '" + str[2]
                             + "', " + str[3] + ", "  + str[4] + ", '" + str[5] + "');");
                 }
             } catch (IOException e) {
