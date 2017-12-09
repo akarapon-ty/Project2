@@ -1,43 +1,105 @@
 package com.findtheway;
 
-/**
- * Created by Ty on 11/10/2017.
- */
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Edge {
-    private int fromNodeIndex;
-    private int toNodeIndex;
-    private int length;
+public class Edge{
+    int Idfrom;
+    int lineto;
+    int Idto;
+    int Distance;
+    String polyline;
+    int Route;
+    int linefrom;
 
-
-
-
-    public Edge(int fromNodeIndex, int toNodeIndex, int length){
-        this.fromNodeIndex = fromNodeIndex;
-        this.toNodeIndex = toNodeIndex;
-        this.length = length;
-    }
-    public int getFromNodeIndex(){
-        return  fromNodeIndex;
-    }
-    public int getToNodeIndex(){
-        return toNodeIndex;
-    }
-    public int getLength(){
-        return length;
+    public Node getNodefrom() {
+        return nodefrom;
     }
 
-    public int getNeighbouringIndex(int nodeIndex)
-    {
-        if(this.fromNodeIndex == nodeIndex)
-        {
-            return this.toNodeIndex;
+    public void setNodefrom(Node nodefrom) {
+        this.nodefrom = nodefrom;
+    }
+
+    public Node getNodeto() {
+        return nodeto;
+    }
+
+    public void setNodeto(Node nodeto) {
+        this.nodeto = nodeto;
+    }
+
+    Node nodefrom;
+    Node nodeto;
+
+    public Edge() {
+
+    }
+
+
+
+    public int getRoute() {
+        return Route;
+    }
+
+    public void setRoute(int route) {
+        Route = route;
+    }
+
+    public int getLinefrom() {
+        return linefrom;
+    }
+
+    public void setLinefrom(int linefrom) {
+        this.linefrom = linefrom;
+    }
+
+    public int getIdfrom() {
+        return Idfrom;
+    }
+
+    public void setIdfrom(int idfrom) {
+        Idfrom = idfrom;
+    }
+
+    public int getLineto() {
+        return lineto;
+    }
+
+    public void setLineto(int lineto) {
+        this.lineto = lineto;
+    }
+
+    public int getIdto() {
+        return Idto;
+    }
+
+    public void setIdto(int idto) {
+        Idto = idto;
+    }
+
+    public int getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(int distance) {
+        Distance = distance;
+    }
+
+    public String getPolyline() {
+        return polyline;
+    }
+
+    public void setPolyline(String polyline) {
+        this.polyline = polyline;
+    }
+
+
+    public Node getNeighbour(Node node) {
+        if (nodefrom.equals(node)) {
+            return nodeto;
+        } else {
+            return nodefrom;
         }
-        else {
-            return this.fromNodeIndex;
-        }
     }
-    public void setFromNodeIndex(int fromNodeIndex) {
-        this.fromNodeIndex = fromNodeIndex;
-    }
+
 }

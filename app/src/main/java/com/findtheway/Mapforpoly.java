@@ -42,8 +42,6 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-import static java.lang.Math.*;
-
 public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,OnLocationUpdatedListener {
     final static int PERMISSION_ALL = 1;
     final static String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -58,7 +56,7 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
     double longitude;
     MarkerOptions Marker2;
     Bus b;
-    Navi n;
+    Station n;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

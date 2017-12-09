@@ -1,99 +1,78 @@
 package com.findtheway;
 
 import java.util.ArrayList;
-
-/**
- * Created by Ty on 11/10/2017.
- */
-
+// now we must create graph object and implement dijkstra algorithm
 public class Graph {
-    private Node[] nodes;
+    ArrayList<Node> nodes = new ArrayList<>();
     private int noOfNodes;
-    private Edge[] edges;
+    ArrayList<Edge> edges = new ArrayList<>();
     private int noOfEdges;
-
-    public Graph(Edge[] edges){
+    public Graph(ArrayList<Edge> edges,ArrayList<Node> nodes) {
         this.edges = edges;
-        this.noOfNodes = calculateNoOfNodes(edges);
-        this.nodes = new Node[this.noOfNodes];
+        // create all nodes ready to be updated with the edges
+        this.noOfNodes = nodes.size();
+        this.nodes = nodes;
 
-        for (int n = 0; n<this.noOfNodes; n++){
-            this.nodes[n] = new Node();
+        for (int n = 0; n < this.noOfNodes; n++) {
+            this.nodes.get(n).setDistanceFromSource(Integer.MAX_VALUE);
+            this.nodes.get(n).setVisited(false);
         }
-        this.noOfEdges = edges.length;
-
-        for (int edgeToAdd = 0; edgeToAdd < this.noOfEdges; edgeToAdd++){
-            this.nodes[edges[edgeToAdd].getFromNodeIndex()].getEdges().add(edges[edgeToAdd]);
-            this.nodes[edges[edgeToAdd].getToNodeIndex()].getEdges().add(edges[edgeToAdd]);
-
+        // add all the edges to the nodes, each edge added to two nodes (to and from)
+        this.noOfEdges = edges.size();
+        for (int i = 0; i < this.noOfEdges; i++) {
+            Edge edgeToAdd = edges.get(i);
+            edgeToAdd.getNodefrom().getEdges().add(edgeToAdd);
+            edgeToAdd.getNodeto().getEdges().add(edgeToAdd);
         }
     }
+    // next video to implement the Dijkstra algorithm !!!
+    public void calculateShortestDistances(Node sourceNode) {
+        // node 0 as source
+        sourceNode.setDistanceFromSource(0);
+        sourceNode.setVisited(true);
+        Node nextNode = sourceNode;
 
-    private int calculateNoOfNodes(Edge[] edges){
-        int noOfNodes = 0;
-        for (Edge e : edges){
-            if (e.getToNodeIndex()>noOfNodes)
-                noOfNodes = e.getToNodeIndex();
-            if (e.getFromNodeIndex()>noOfNodes)
-                noOfNodes = e.getFromNodeIndex();
-        }
-        noOfNodes++;
-        return noOfNodes;
-    }
-    public void calculateShortestDistance(){
-        this.nodes[0].setDistanceFromSource(0);
-        int nextNode = 0;
-        for (int i = 0; i< this.nodes.length; i++){
-            ArrayList<Edge> currentNodeEdges = this.nodes[nextNode].getEdges();
-            for(int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++){
-                int neighbourIndex = currentNodeEdges.get(joinedEdge).getNeighbouringIndex(nextNode);
-                if (!this.nodes[neighbourIndex].isVisited()){
-                    int tentative = this.nodes[nextNode].getDistanceFromSource() + currentNodeEdges.get(joinedEdge).getLength();
-
-                    if (tentative < nodes[neighbourIndex].getDistanceFromSource()){
-                        nodes[neighbourIndex].setDistanceFromSource(tentative);
+        // visit every node
+        for (int i = 0; i < nodes.size(); i++) {
+            // loop around the edges of current node
+            ArrayList<Edge> currentNodeEdges = nextNode.getEdges();
+            for (int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++) {
+                Node neighbour = currentNodeEdges.get(joinedEdge).getNeighbour(nextNode);
+                // only if not visited
+                if (!neighbour.isVisited()) {
+                    int tentative = nextNode.getDistanceFromSource() + currentNodeEdges.get(joinedEdge).getDistance();
+                    if (tentative < neighbour.getDistanceFromSource()) {
+                        neighbour.setDistanceFromSource(tentative);
+                        neighbour.setPrevNode(nextNode);
                     }
                 }
             }
-            nodes[nextNode].setVisited(true);
+            // all neighbours checked so node visited
+            nextNode.setVisited(true);
+            // next node must be with shortest distance
             nextNode = getNodeShortestDistanced();
         }
     }
-
-    private  int getNodeShortestDistanced(){
-        int storeNodeIndex = 0;
+    // now we're going to implement this method in next part !
+    private Node getNodeShortestDistanced() {
+        Node node = nodes.get(0);
         int storedDist = Integer.MAX_VALUE;
-        for (int i = 0; i<this.nodes.length;i++){
-            int currentDist = this.nodes[i].getDistanceFromSource();
-            if (!this.nodes[i].isVisited() && currentDist < storedDist ){
+        for (int i = 0; i < nodes.size(); i++) {
+            int currentDist = nodes.get(i).getDistanceFromSource();
+            if (!this.nodes.get(i).isVisited() && currentDist < storedDist) {
                 storedDist = currentDist;
-                storeNodeIndex = i;
+                node = nodes.get(i);
             }
         }
-        return storeNodeIndex;
+        return node;
     }
-
-    public void printresult(){
+    // display result
+    public void printResult() {
         String output = "Number of nodes = " + this.noOfNodes;
-        output +=("\nNumber of edges = " +this.noOfEdges);
-        for (int i = 0; i<this.nodes.length;i++){
-            output +=("\nThe shortest distance from node 0 to node" + i + "is" + nodes[i].getDistanceFromSource());
-        }
-        System.out.print(output);
-    }
-    public Node[] getNodes() {
-        return nodes;
-    }
-
-    public int getNoOfNodes() {
-        return noOfNodes;
-    }
-
-    public Edge[] getEdges() {
-        return edges;
-    }
-
-    public int getNoOfEdges() {
-        return noOfEdges;
+        output += "\nNumber of edges = " + this.noOfEdges;
+        for (int i = 0; i < nodes.size(); i++) {
+            output += ("\nThe shortest distance from node 0 to node " + i + " is " + nodes.get(i).getDistanceFromSource());
+      }
+        System.out.println(output);
     }
 }

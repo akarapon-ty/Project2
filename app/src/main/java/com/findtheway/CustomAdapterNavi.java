@@ -1,7 +1,6 @@
 package com.findtheway;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,19 @@ import java.util.ArrayList;
 
 public class CustomAdapterNavi extends BaseAdapter {
     Context mContext;
-    ArrayList<Navi> NaviArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
-    public CustomAdapterNavi(Context context, ArrayList<Navi> NaviArray){
+    ArrayList<Station> stationArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
+    public CustomAdapterNavi(Context context, ArrayList<Station> stationArray){
         this.mContext = context;
-        this.NaviArray = NaviArray;
+        this.stationArray = stationArray;
     }
     @Override
     public int getCount() {
-        return NaviArray.size();
+        return stationArray.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return NaviArray.get(position);
+        return stationArray.get(position);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class CustomAdapterNavi extends BaseAdapter {
         // (หากต้องการให้เป็นตัวอื่นที่ไม่ใช่ TextView ธรรมดา ก็จำเป็นต้องสร้าง xml อันใหม่ขึ้นมาใน Folder Layout แล้ว inflate ไฟล์นั้นแทน)
 
         TextView textView = (TextView)view.findViewById(android.R.id.text1);
-        Navi b = NaviArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
+        Station b = stationArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
         String text = b.getName();      // อันนี้คือตัวแปร text ป็นประเภท String ที่ได้จากการเอาข้อมูล line ออกมาจาก Bus
         textView.setText(text);
 //        textView.setOnContextClickListener();

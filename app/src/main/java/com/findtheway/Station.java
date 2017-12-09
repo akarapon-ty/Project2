@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Ty on 12/7/2017.
  */
 
-public class Navi implements Parcelable {
+public class Station implements Parcelable {
     private int Line;
     private int ID;
     private String Name;
@@ -27,7 +27,7 @@ public class Navi implements Parcelable {
 
 
 
-    public Navi(){
+    public Station(){
     }
 
     public int getLine() {
@@ -85,7 +85,7 @@ public class Navi implements Parcelable {
 //        dest.writeDouble(Dis);
     }
 
-    private Navi(Parcel in){
+    private Station(Parcel in){
 //        this.Line = in.readString();
 //        this.ID = in.readString();
         this.Name = in.readString();
@@ -95,16 +95,16 @@ public class Navi implements Parcelable {
 //        this.Dis = in.readDouble();
     }
 
-    public static final Parcelable.Creator<Navi> CREATOR = new Parcelable.Creator<Navi>() {
+    public static final Parcelable.Creator<Station> CREATOR = new Parcelable.Creator<Station>() {
 
         @Override
-        public Navi createFromParcel(Parcel source) {
-            return new Navi(source);
+        public Station createFromParcel(Parcel source) {
+            return new Station(source);
         }
 
         @Override
-        public Navi[] newArray(int size) {
-            return new Navi[size];
+        public Station[] newArray(int size) {
+            return new Station[size];
         }
     };
 

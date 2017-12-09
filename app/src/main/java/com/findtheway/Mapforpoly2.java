@@ -56,20 +56,29 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     private GoogleMap mMap;
     MarkerOptions mo;
     Marker marker;
+    Graph g;
     LocationManager locationManager;
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-    Navi n;
+    Station n;
     SQLiteDatabase mDb;
     DBnavi mHelper;
     DBdis mHelperdis;
-    Navi b = new Navi();
+    Station b = new Station();
     Cursor mCursor;
-    final ArrayList<Navi> stationarray = new ArrayList<>();
+    ArrayList<Node> stationArray = new ArrayList<>();
+    ArrayList<Node> dirArray = new ArrayList<>();
     Graph Graph;
-    int countstation;
 
+    protected Node searchStation(int line, int id, ArrayList<Node> nodes) {
+        for(int i=0;i< nodes.size();i++){
+            if(nodes.get(i).getLine()==line && nodes.get(i).getID()==id)
+                return nodes.get(i);
+        }
+        Log.d("Error",""+ line + "," + id);
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +93,10 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
         mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
                 + DBnavi.COL_ID + ", " + DBnavi.COL_Name + ", " + DBnavi.COL_Lat+ ", "
                 + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME , null);
-
-        final ArrayList<Navi> dirArray = new ArrayList<>();
         mCursor.moveToFirst();
 
         while ( !mCursor.isAfterLast() ){
-            Navi b = new Navi();
+            Node b = new Node();
             b.setLine(mCursor.getInt(mCursor.getColumnIndex(DBnavi.COL_Line)));
             b.setID(mCursor.getInt(mCursor.getColumnIndex(DBnavi.COL_ID)));
             b.setName(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Name)));
@@ -106,11 +113,11 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                 + DBdis.COL_Linefrom + ", " + DBdis.COL_Lineto + ", "
                 + DBdis.COL_IDform + ", " + DBdis.COL_IDto + " , "
                 + DBdis.COL_Distance + ", " + DBdis.COL_Polyline + " FROM " + DBdis.TABLE_NAME, null);
-        ArrayList<dis> distanArray = new ArrayList<>();
+        final ArrayList<Edge> distanArray = new ArrayList<>();
         mCursor.moveToFirst();
 
         while (!mCursor.isAfterLast()) {
-            dis b = new dis();
+            Edge b = new Edge();
             b.setRoute(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Route)));
             b.setLinefrom(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Linefrom)));
             b.setLineto(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Lineto)));
@@ -118,6 +125,9 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             b.setIdto(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_IDto)));
             b.setDistance(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Distance)));
             b.setPolyline(mCursor.getString(mCursor.getColumnIndex(DBdis.COL_Polyline)));
+            b.setNodefrom(searchStation(b.getLinefrom(),b.getIdfrom(),dirArray));
+            b.setNodeto(searchStation(b.getLineto(),b.getIdto(),dirArray));
+
             distanArray.add(b);
             mCursor.moveToNext();
         }
@@ -133,7 +143,6 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Smartonlocationclick();
                 marker.remove();
                 Marker2 = (new MarkerOptions().position(new LatLng(latitude, longitude))
@@ -141,9 +150,10 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                 marker = mMap.addMarker(Marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
-                cal(dirArray, stationarray);
-
-
+                stationArray = filterStationInRange(dirArray);
+                g = new Graph(distanArray, dirArray);
+                g.calculateShortestDistances(stationArray.get(0));
+                g.printResult();
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -355,13 +365,16 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
         dialog.show();
     }
 
-    void cal(ArrayList<Navi> dirArray, ArrayList<Navi> stationarray)
-    {    double d;
+    ArrayList<Node> filterStationInRange(ArrayList<Node> dirArray)
+    {
+        ArrayList<Node> stationarray = new ArrayList<>();
+        double d;
         int i;
         int j=0;
         double R= 6371e3;
         double lat=toRadians(latitude);
         double lon=toRadians(longitude);
+        int countstation = 0;
         for(i=0;i<dirArray.size();i++) {
             double lat2 =dirArray.get(i).getLat();
             double lon2 =dirArray.get(i).getLon();
@@ -383,6 +396,7 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                 countstation++;
             }
         }
+        return stationarray;
 
     }
 }
