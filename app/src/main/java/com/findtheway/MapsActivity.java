@@ -59,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     MarkerOptions Marker2;
+    double latsent;
+    double lonsent;
 
 
     @Override
@@ -110,7 +112,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else if (item_id == R.id.navi){
                     Intent intent = new Intent(MapsActivity.this,DB_listnavi.class);
+                    intent.putExtra("lat",latsent);
+                    intent.putExtra("lon",lonsent);
                     startActivity(intent);
+
                 }
                 return false;
             }

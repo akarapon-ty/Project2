@@ -39,7 +39,7 @@ public class DBdis extends SQLiteOpenHelper {
                 + COL_Route + " INTEGER, " + COL_Linefrom + " INTEGER, "
                 + COL_Lineto + " INTEGER, " + COL_IDform + " INTEGER, "
                 + COL_IDto + " INTEGER, " + COL_Distance + " INTEGER, "
-                + COL_Polyline +"TEXT);");
+                + COL_Polyline +" TEXT);");
 
         try {
             BufferedReader br = new BufferedReader(
@@ -56,7 +56,7 @@ public class DBdis extends SQLiteOpenHelper {
                             + ", " + COL_Lineto + ", " + COL_IDform
                             + ", " + COL_IDto + ", " + COL_Distance + ", " + COL_Polyline + ") " + "VALUES (" + str[0]
                             + ", " + str[1] + ", " + str[2]
-                            + ", " + str[3] + ", "  + str[4] + ", " + str[5] + ",'" + str[6] + "');");
+                            + ", " + str[3] + ", "  + str[4] + ", " + str[5] + ", '" + str[6] + "');");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

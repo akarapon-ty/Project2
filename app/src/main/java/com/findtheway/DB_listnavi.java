@@ -22,6 +22,8 @@ public class DB_listnavi extends AppCompatActivity {
     SQLiteDatabase mDb;
     DBnavi mHelper;
     Cursor mCursor;
+    double latsent;
+    double lonsent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,9 @@ public class DB_listnavi extends AppCompatActivity {
         mHelper = new DBnavi(this);
         mDb = mHelper.getWritableDatabase();
         mHelper.onUpgrade(mDb, 1, 1);
+        getIntent().getDoubleExtra("lat",latsent);
+        getIntent().getDoubleExtra("lon",lonsent);
+        Log.d("lat lon listnavi",+latsent+","+lonsent);
 
         mCursor = mDb.rawQuery("SELECT DISTINCT " + DBnavi.COL_Name + " FROM " + DBnavi.TABLE_NAME , null);
 
@@ -54,6 +59,8 @@ public class DB_listnavi extends AppCompatActivity {
                 Log.d("testinside","pass");
                 Intent intent = new Intent(DB_listnavi.this,Mapforpoly2.class);
                 intent.putExtra("x",b);
+                intent.putExtra("latsent",latsent);
+                intent.putExtra("lonsent",lonsent);
                 startActivity(intent);
             }
         });

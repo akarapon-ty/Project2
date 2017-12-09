@@ -19,32 +19,32 @@ import java.util.ArrayList;
 public class DB_listdis extends AppCompatActivity {
     dis b = new dis();
     SQLiteDatabase mDb;
-    DBdis mHelper;
-    Cursor mCursor;
+    DBdis mHelperdis;
+    Cursor mCursordis;
 
     public DB_listdis() {
-        mHelper = new DBdis(this);
-        mDb = mHelper.getWritableDatabase();
-        mHelper.onUpgrade(mDb, 1, 1);
+        mHelperdis = new DBdis(this);
+        mDb = mHelperdis.getWritableDatabase();
+        mHelperdis.onUpgrade(mDb, 1, 1);
 
-        mCursor = mDb.rawQuery("SELECT " + DBdis.COL_Route + ", "
+        mCursordis = mDb.rawQuery("SELECT " + DBdis.COL_Route + ", "
                 + DBdis.COL_Linefrom + ", " + DBdis.COL_Lineto + ", "
                 + DBdis.COL_IDform + ", " + DBdis.COL_IDto + " , "
                 + DBdis.COL_Distance + ", " + DBdis.COL_Polyline + " FROM " + DBdis.TABLE_NAME, null);
         ArrayList<dis> disArray = new ArrayList<>();
-        mCursor.moveToFirst();
+        mCursordis.moveToFirst();
 
-        while (!mCursor.isAfterLast()) {
+        while (!mCursordis.isAfterLast()) {
             dis b = new dis();
-            b.setRoute(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Route)));
-            b.setLinefrom(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Linefrom)));
-            b.setLineto(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Lineto)));
-            b.setIdfrom(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_IDform)));
-            b.setIdto(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_IDto)));
-            b.setDistance(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Distance)));
-            b.setPolyline(mCursor.getString(mCursor.getColumnIndex(DBdis.COL_Polyline)));
+            b.setRoute(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_Route)));
+            b.setLinefrom(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_Linefrom)));
+            b.setLineto(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_Lineto)));
+            b.setIdfrom(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_IDform)));
+            b.setIdto(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_IDto)));
+            b.setDistance(mCursordis.getInt(mCursordis.getColumnIndex(DBdis.COL_Distance)));
+            b.setPolyline(mCursordis.getString(mCursordis.getColumnIndex(DBdis.COL_Polyline)));
             disArray.add(b);
-            mCursor.moveToNext();
+            mCursordis.moveToNext();
         }
         final CustomAdapterdis adapter = new CustomAdapterdis(this, disArray);
 //        Log.d("test datanavi",dirArray.size()+", "+dirArray.get(0).getLine());

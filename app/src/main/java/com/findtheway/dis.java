@@ -27,7 +27,7 @@ public class dis implements Parcelable {
     public void setRoute(int route) {
         Route = route;
     }
-    public double getLinefrom() {
+    public int getLinefrom() {
         return linefrom;
     }
     public void setLinefrom(int linefrom) {
