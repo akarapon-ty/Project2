@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,11 +32,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -73,11 +68,12 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     Cursor mCursor;
     final ArrayList<Navi> stationarray = new ArrayList<>();
     Graph Graph;
-    Edge Edge;
-    Node Node;
+    int countstation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getIntent().putExtra("latsent",latitude);
@@ -125,11 +121,6 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             distanArray.add(b);
             mCursor.moveToNext();
         }
-//        Log.d("dis DB test",+distanArray.get(0).Distance+"");
-        cal(dirArray,stationarray);
-//        for(count=0;count<stationarray.size();count++)
-//        Node.setDistanceFromSource(stationarray.get(count).getDis());
-
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -144,13 +135,14 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             public void onClick(View view) {
 
                 Smartonlocationclick();
-
                 marker.remove();
-                Marker2 = (new MarkerOptions().position(new LatLng(latitude,longitude))
+                Marker2 = (new MarkerOptions().position(new LatLng(latitude, longitude))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.track)).title("MyLocation"));
                 marker = mMap.addMarker(Marker2);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
+                cal(dirArray, stationarray);
+
 
             }
         });
@@ -366,7 +358,6 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     void cal(ArrayList<Navi> dirArray, ArrayList<Navi> stationarray)
     {    double d;
         int i;
-        int k=0;
         int j=0;
         double R= 6371e3;
         double lat=toRadians(latitude);
@@ -388,8 +379,8 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             if(d<1000)
             {
                 stationarray.add(dirArray.get(i));
-                Log.d("check dis",""+stationarray.get(k).getDis() );
-                k++;
+                Log.d("check dis",""+stationarray.get(countstation).getDis() );
+                countstation++;
             }
         }
 

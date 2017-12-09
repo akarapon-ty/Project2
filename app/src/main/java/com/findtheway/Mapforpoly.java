@@ -127,13 +127,13 @@ public class Mapforpoly extends FragmentActivity implements OnMapReadyCallback,O
         Log.d("location after clicked", ""+latitude+","+longitude);
         List<LatLng> decodedPath = PolyUtil.decode(b.getPolyline());
         mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
-                .width(20)
-                .color(Color.RED));
+                .width(10)
+                .color(Color.BLUE));
 
         List<LatLng> decodedPath2 = PolyUtil.decode(b.getPolylineB());
         mMap.addPolyline(new PolylineOptions().addAll(decodedPath2)
-                .width(20)
-                .color(Color.BLUE));
+                .width(10)
+                .color(Color.MAGENTA));
     }
 
 //    public static void main(String[] args){
