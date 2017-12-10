@@ -70,6 +70,7 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     DBnavi mHelper;
     DBdis mHelperdis;
     Station b = new Station();
+    int alldistance;
     Cursor mCursor;
     ArrayList<Node> stationArray = new ArrayList<>();
     ArrayList<Node> dirArray = new ArrayList<>();
@@ -179,24 +180,23 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                 }
                 g.calculateShortestDistances(stationArray.get(0));
                 g.printResult();
-                for(int i=0;i<edgeList.size();i++) {
-                    List<LatLng> decodedPath = PolyUtil.decode(edgeList.get(i).getPolyline());
-                    mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
-                            .width(10)
-                            .color(Color.BLUE));
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(edgeList.get(i).getNodefrom().getLat(), edgeList.get(i).getNodefrom().getLon()))
-                            .title(String.valueOf(edgeList.get(i).getLinefrom())));
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(edgeList.get(i).getNodeto().getLat(), edgeList.get(i).getNodeto().getLon()))
-                            .title(String.valueOf(edgeList.get(i).getLineto())));
-                    Log.d("Check edge list ", ""+edgeList.get(i).getNodefrom().getLat());
-
+                   for (int i = 0; i < edgeList.size(); i++) {
+                        List<LatLng> decodedPath = PolyUtil.decode(edgeList.get(i).getPolyline());
+                        mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
+                                .width(10)
+                                .color(Color.DKGRAY));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(edgeList.get(i).getNodefrom().getLat(), edgeList.get(i).getNodefrom().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
+                                .title(String.valueOf(edgeList.get(i).getLinefrom())));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(edgeList.get(i).getNodeto().getLat(), edgeList.get(i).getNodeto().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
+                                .title(String.valueOf(edgeList.get(i).getLineto())));
+                        Log.d("Check edge list ", "" + edgeList.get(i).getNodefrom().getLat());
+                    }
                 }
 
 
 
-            }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
