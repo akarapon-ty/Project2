@@ -94,6 +94,8 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
         stationdestination = getIntent().getStringExtra("x");
         mHelper = new DBnavi(this);
         mDb = mHelper.getWritableDatabase();
+
+        mHelper.onUpgrade(mDb,1,1);
         mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
                 + DBnavi.COL_ID + ", " + DBnavi.COL_Name + ", " + DBnavi.COL_Lat+ ", "
                 + DBnavi.COL_Lon + ", " + DBnavi.COL_Trip + " FROM " + DBnavi.TABLE_NAME , null);
@@ -110,16 +112,15 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             dirArray.add(b);
             mCursor.moveToNext();
         }
-
         mHelperdis = new DBdis(this);
         mDb = mHelperdis.getWritableDatabase();
+        mHelperdis.onUpgrade(mDb,1,1);
         mCursor = mDb.rawQuery("SELECT " + DBdis.COL_Route + ", "
                 + DBdis.COL_Linefrom + ", " + DBdis.COL_Lineto + ", "
                 + DBdis.COL_IDform + ", " + DBdis.COL_IDto + " , "
                 + DBdis.COL_Distance + ", " + DBdis.COL_Polyline + " FROM " + DBdis.TABLE_NAME, null);
         final ArrayList<Edge> distanArray = new ArrayList<>();
         mCursor.moveToFirst();
-
         while (!mCursor.isAfterLast()) {
             Edge b = new Edge();
             b.setRoute(mCursor.getInt(mCursor.getColumnIndex(DBdis.COL_Route)));
@@ -131,7 +132,6 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             b.setPolyline(mCursor.getString(mCursor.getColumnIndex(DBdis.COL_Polyline)));
             b.setNodefrom(searchStation(b.getLinefrom(),b.getIdfrom(),dirArray));
             b.setNodeto(searchStation(b.getLineto(),b.getIdto(),dirArray));
-
             distanArray.add(b);
             mCursor.moveToNext();
         }
@@ -171,11 +171,8 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                         Log.d("Check distance",""+Distance);
                         if(Distance < minDistance){
                             minDistance = Distance;
-//                            for (int n = 0; n < dirArray.size(); n++) {
-//                                dirArray.get(n).setVisited(false);
-//                            }
-                            edgeList = g.getNavigationto(alldestination.get(j));
-                        }
+                           edgeList = g.getNavigationto(alldestination.get(j));
+                            }
                         }
                 }
                 g.calculateShortestDistances(stationArray.get(0));
@@ -185,15 +182,18 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                         mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
                                 .width(10)
                                 .color(Color.DKGRAY));
-                        mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(edgeList.get(i).getNodefrom().getLat(), edgeList.get(i).getNodefrom().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
-                                .title(String.valueOf(edgeList.get(i).getLinefrom())));
-                        mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(edgeList.get(i).getNodeto().getLat(), edgeList.get(i).getNodeto().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
-                                .title(String.valueOf(edgeList.get(i).getLineto())));
-                        Log.d("Check edge list ", "" + edgeList.get(i).getNodefrom().getLat());
-                    }
-                }
+                       mMap.addMarker(new MarkerOptions()
+                               .position(new LatLng(edgeList.get(i).getNodefrom().getLat(), edgeList.get(i).getNodefrom().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
+                               .title(String.valueOf(edgeList.get(i).getNodefrom().getLine())));
+                       mMap.addMarker(new MarkerOptions()
+                               .position(new LatLng(edgeList.get(i).getNodeto().getLat(), edgeList.get(i).getNodeto().getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.pon))
+                               .title(String.valueOf(edgeList.get(i).getNodeto().getLine())));
+
+                       Log.d("Check edge list ", "" + edgeList.get(i).getIdfrom());
+                       Log.d("Check id list ", "" + edgeList.get(i).getIdto());
+
+                   }
+            }
 
 
 
@@ -428,10 +428,10 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             double c = 2*atan2(sqrt(a),sqrt(1-a));
 //              Log.d("check c",""+c );
 
-            d = R*c;
+            d = R*c*10;
             dirArray.get(i).setDis(d);
 //            Log.d("check dis",""+d );
-            if(d<1000)
+            if(d<10000)
             {
                 stationarray.add(dirArray.get(i));
                 Log.d("check dis",""+stationarray.get(countstation).getDis() );
