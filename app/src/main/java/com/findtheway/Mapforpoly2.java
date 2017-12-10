@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -32,8 +33,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -166,12 +170,32 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                         Log.d("Check distance",""+Distance);
                         if(Distance < minDistance){
                             minDistance = Distance;
+//                            for (int n = 0; n < dirArray.size(); n++) {
+//                                dirArray.get(n).setVisited(false);
+//                            }
                             edgeList = g.getNavigationto(alldestination.get(j));
                         }
-                    }
+                        }
+                }
+                g.calculateShortestDistances(stationArray.get(0));
+                g.printResult();
+                for(int i=0;i<edgeList.size();i++) {
+                    List<LatLng> decodedPath = PolyUtil.decode(edgeList.get(i).getPolyline());
+                    mMap.addPolyline(new PolylineOptions().addAll(decodedPath)
+                            .width(10)
+                            .color(Color.BLUE));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(edgeList.get(i).getNodefrom().getLat(), edgeList.get(i).getNodefrom().getLon()))
+                            .title(String.valueOf(edgeList.get(i).getLinefrom())));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(edgeList.get(i).getNodeto().getLat(), edgeList.get(i).getNodeto().getLon()))
+                            .title(String.valueOf(edgeList.get(i).getLineto())));
+                    Log.d("Check edge list ", ""+edgeList.get(i).getNodefrom().getLat());
+
                 }
 
-                g.printResult();
+
+
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

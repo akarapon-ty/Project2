@@ -21,7 +21,7 @@ public class Graph {
         for (int i = 0; i < this.noOfEdges; i++) {
             Edge edgeToAdd = edges.get(i);
             edgeToAdd.getNodefrom().getEdges().add(edgeToAdd);
-            edgeToAdd.getNodeto().getEdges().add(edgeToAdd);
+                edgeToAdd.getNodeto().getEdges().add(edgeToAdd);
         }
     }
 
@@ -77,9 +77,13 @@ public class Graph {
 
     public ArrayList<Edge> getNavigationto(Node node)
     {
+        for (int n = 0; n < this.noOfNodes; n++) {
+            this.nodes  .get(n).setVisited(false);
+        }  Log.d("Check Station", ""+node.getID() + ","+node.getLine());
+
         ArrayList<Edge> edgeindex = new ArrayList<>();
-        while(node.getPrevNode() != null)
-        {
+        while(node.getPrevNode() != null && node.isVisited()==false)
+        {   node.setVisited(true);
             Log.d("Check Station", ""+node.getID() + ","+node.getLine());
             edgeindex.add(0,node.getPrevEdge());
             node = node.getPrevNode();
