@@ -61,7 +61,7 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     double latitude;
     double longitude;
     MarkerOptions Marker2;
-    Station n;
+    String stationdestination;
     SQLiteDatabase mDb;
     DBnavi mHelper;
     DBdis mHelperdis;
@@ -70,6 +70,7 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
     ArrayList<Node> stationArray = new ArrayList<>();
     ArrayList<Node> dirArray = new ArrayList<>();
     Graph Graph;
+    ArrayList<Edge> edgeList = new ArrayList<>();
 
     protected Node searchStation(int line, int id, ArrayList<Node> nodes) {
         for(int i=0;i< nodes.size();i++){
@@ -85,9 +86,7 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getIntent().putExtra("latsent",latitude);
-        getIntent().putExtra("lonsent",longitude);
-        Log.d("lon lat",+latitude+","+longitude);
+        stationdestination = getIntent().getStringExtra("x");
         mHelper = new DBnavi(this);
         mDb = mHelper.getWritableDatabase();
         mCursor = mDb.rawQuery("SELECT " + DBnavi.COL_Line + ", "
@@ -131,8 +130,6 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
             distanArray.add(b);
             mCursor.moveToNext();
         }
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -151,8 +148,29 @@ public class Mapforpoly2 extends FragmentActivity implements OnMapReadyCallback,
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
                 stationArray = filterStationInRange(dirArray);
+                ArrayList<Node> alldestination = new ArrayList<>();
+                for(int i=0;i<dirArray.size();i++) {
+                    if(stationdestination.equals(dirArray.get(i).getName())){
+                        alldestination.add(dirArray.get(i));
+                    Log.d("StationName", ""+alldestination.get(0).getName());
+                    }
+                }
+                int minDistance=Integer.MAX_VALUE;
+                int Distance =Integer.MAX_VALUE;
                 g = new Graph(distanArray, dirArray);
-                g.calculateShortestDistances(stationArray.get(0));
+                for(int i=0;i<stationArray.size();i++) {
+                    g.calculateShortestDistances(stationArray.get(i));
+                    for(int j=0;j<alldestination.size();j++)
+                    {   Node destinationnode = alldestination.get(j);
+                        Distance = destinationnode.getDistanceFromSource();
+                        Log.d("Check distance",""+Distance);
+                        if(Distance < minDistance){
+                            minDistance = Distance;
+                            edgeList = g.getNavigationto(alldestination.get(j));
+                        }
+                    }
+                }
+
                 g.printResult();
             }
         });

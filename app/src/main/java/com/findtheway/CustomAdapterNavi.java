@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class CustomAdapterNavi extends BaseAdapter {
     Context mContext;
-    ArrayList<Station> stationArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
-    public CustomAdapterNavi(Context context, ArrayList<Station> stationArray){
+    ArrayList<Node> stationArray;   // ตัวแปรที่เป็นที่เก็บข้อมูล อยู่ภายใน Adapter
+    public CustomAdapterNavi(Context context, ArrayList<Node> stationArray){
         this.mContext = context;
         this.stationArray = stationArray;
     }
@@ -51,7 +51,7 @@ public class CustomAdapterNavi extends BaseAdapter {
         // (หากต้องการให้เป็นตัวอื่นที่ไม่ใช่ TextView ธรรมดา ก็จำเป็นต้องสร้าง xml อันใหม่ขึ้นมาใน Folder Layout แล้ว inflate ไฟล์นั้นแทน)
 
         TextView textView = (TextView)view.findViewById(android.R.id.text1);
-        Station b = stationArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
+        Node b = stationArray.get(position);  // อันนี้คือตัวแปร b เป็นประเภท Bus ที่อยู่ใน ArrayList ตำแหน่งที่ position
         String text = b.getName();      // อันนี้คือตัวแปร text ป็นประเภท String ที่ได้จากการเอาข้อมูล line ออกมาจาก Bus
         textView.setText(text);
 //        textView.setOnContextClickListener();

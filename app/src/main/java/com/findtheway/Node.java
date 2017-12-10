@@ -4,9 +4,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-public class Node {
+public class Node implements Parcelable {
     private int distanceFromSource = Integer.MAX_VALUE;
     private Node prevNode;
+
+    public Edge getPrevEdge() {
+        return prevEdge;
+    }
+
+    public void setPrevEdge(Edge prevEdge) {
+        this.prevEdge = prevEdge;
+    }
+
+    private Edge prevEdge;
     private boolean visited;
     private ArrayList<Edge> edges = new ArrayList<>(); // now we must create edges
     private int Line;

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class DB_listnavi extends AppCompatActivity {
     ListView lst;
-    Station b = new Station();
+    Node b = new Node();
     SQLiteDatabase mDb;
     DBnavi mHelper;
     Cursor mCursor;
@@ -39,11 +39,11 @@ public class DB_listnavi extends AppCompatActivity {
 
         mCursor = mDb.rawQuery("SELECT DISTINCT " + DBnavi.COL_Name + " FROM " + DBnavi.TABLE_NAME , null);
 
-        ArrayList<Station> dirArray = new ArrayList<>();
+        ArrayList<Node> dirArray = new ArrayList<>();
         mCursor.moveToFirst();
 
         while ( !mCursor.isAfterLast() ){
-            Station b = new Station();
+            Node b = new Node();
             b.setName(mCursor.getString(mCursor.getColumnIndex(DBnavi.COL_Name)));
             dirArray.add(b);
             mCursor.moveToNext();
@@ -55,12 +55,10 @@ public class DB_listnavi extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Station b = (Station) adapter.getItem(i);
+                Node b = (Node) adapter.getItem(i);
                 Log.d("testinside","pass");
                 Intent intent = new Intent(DB_listnavi.this,Mapforpoly2.class);
-                intent.putExtra("x",b);
-                intent.putExtra("latsent",latsent);
-                intent.putExtra("lonsent",lonsent);
+                intent.putExtra("x",b.getName());
                 startActivity(intent);
             }
         });
